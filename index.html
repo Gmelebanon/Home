@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Releases</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 40px 0 20px;
+      font-size: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: #111;
+      padding: 10px;
+      border-radius: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .artist {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .title {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Latest Releases</h1>
+
+  <div class="grid">
+
+    <!-- Repeat this block 10 times -->
+    <div class="card">
+      <img src="image1.jpg" alt="">
+      <div class="artist">Artist Name</div>
+      <div class="title">Song / Album Name</div>
+    </div>
+
+    <div class="card">
+      <img src="image2.jpg" alt="">
+      <div class="artist">Artist Name</div>
+      <div class="title">Song / Album Name</div>
+    </div>
+
+    <!-- add up to 10 -->
+
+  </div>
+
+</body>
+</html>
