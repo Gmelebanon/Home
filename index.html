@@ -7,13 +7,12 @@
 
   <style>
     :root {
-      --bg: #0b0f10;
-      --panel: #111719;
-      --panel-2: #151d20;
-      --border: #263236;
-      --text: #f4f7f7;
-      --muted: #8d9a9e;
-      --accent: #20c997;
+      --bg: #050707;
+      --card: #101414;
+      --card-hover: #151b1b;
+      --text: #ffffff;
+      --muted: #a8b3b3;
+      --accent: #00ff99;
     }
 
     * {
@@ -22,150 +21,111 @@
 
     body {
       margin: 0;
-      font-family: Inter, Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
       color: var(--text);
     }
 
     .page {
-      max-width: 1240px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 32px 20px 56px;
+      padding: 40px 24px 70px;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      padding-bottom: 28px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 32px;
+      text-align: center;
+      margin-bottom: 42px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      display: grid;
-      place-items: center;
+    .logo {
       color: var(--accent);
-      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .brand h1 {
+    h1 {
       margin: 0;
-      font-size: 22px;
-      letter-spacing: -0.03em;
-    }
-
-    .brand p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .badge {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--muted);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-    }
-
-    .hero {
-      margin-bottom: 28px;
-    }
-
-    .hero h2 {
-      margin: 0 0 10px;
-      font-size: clamp(34px, 6vw, 72px);
+      font-size: clamp(38px, 6vw, 72px);
       letter-spacing: -0.06em;
       line-height: 0.95;
     }
 
-    .hero p {
-      margin: 0;
-      max-width: 620px;
+    .subtitle {
       color: var(--muted);
+      margin-top: 16px;
       font-size: 16px;
-      line-height: 1.6;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 22px;
     }
 
     .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
       padding: 12px;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      transition: 0.25s ease;
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(32, 201, 151, 0.5);
+      transform: translateY(-6px);
+      background: var(--card-hover);
+      border-color: rgba(0, 255, 153, 0.45);
     }
 
     .cover {
       width: 100%;
       aspect-ratio: 1 / 1;
-      border-radius: 14px;
       object-fit: cover;
       display: block;
-      background: var(--panel-2);
+      border-radius: 15px;
+      background: #1a1a1a;
     }
 
-    .meta {
-      padding: 12px 4px 4px;
+    .info {
+      padding: 14px 4px 4px;
+      text-align: center;
     }
 
     .artist {
-      font-size: 15px;
       font-weight: 700;
-      margin-bottom: 4px;
+      font-size: 15px;
+      margin-bottom: 5px;
     }
 
     .title {
-      font-size: 13px;
       color: var(--muted);
+      font-size: 13px;
       line-height: 1.4;
     }
 
     footer {
-      margin-top: 36px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      margin-top: 48px;
+      text-align: center;
       color: var(--muted);
       font-size: 13px;
     }
 
-    @media (max-width: 640px) {
-      header {
-        align-items: flex-start;
-        flex-direction: column;
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
       }
+    }
 
+    @media (max-width: 650px) {
       .grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 14px;
       }
 
       .page {
-        padding: 24px 14px 40px;
+        padding: 28px 14px 50px;
       }
     }
   </style>
@@ -174,71 +134,90 @@
 <body>
   <main class="page">
     <header>
-      <div class="brand">
-        <div class="mark">NE</div>
-        <div>
-          <h1>Nerd Engine</h1>
-          <p>Release operations dashboard</p>
-        </div>
-      </div>
-
-      <div class="badge">10 Releases</div>
+      <div class="logo">Nerd Engine</div>
+      <h1>Latest Releases</h1>
+      <p class="subtitle">New music releases curated in one place.</p>
     </header>
-
-    <section class="hero">
-      <h2>Latest Releases</h2>
-      <p>A focused release grid for album artwork, artist names, and song or album titles.</p>
-    </section>
 
     <section class="grid">
       <article class="card">
         <img class="cover" src="01.jpg" alt="Synora - 432 Hz Awareness">
-        <div class="meta"><div class="artist">Synora</div><div class="title">432 Hz Awareness</div></div>
+        <div class="info">
+          <div class="artist">Synora</div>
+          <div class="title">432 Hz Awareness</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="02.jpg" alt="Jaxen - Blank Space">
-        <div class="meta"><div class="artist">Jaxen</div><div class="title">Blank Space</div></div>
+        <div class="info">
+          <div class="artist">Jaxen</div>
+          <div class="title">Blank Space</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="03.jpg" alt="Sheri Sky - Bleeding Love">
-        <div class="meta"><div class="artist">Sheri Sky</div><div class="title">Bleeding Love</div></div>
+        <div class="info">
+          <div class="artist">Sheri Sky</div>
+          <div class="title">Bleeding Love</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="04.jpg" alt="Tru Moksha - Eastern Essence 1.0">
-        <div class="meta"><div class="artist">Tru Moksha</div><div class="title">Eastern Essence 1.0</div></div>
+        <div class="info">
+          <div class="artist">Tru Moksha</div>
+          <div class="title">Eastern Essence 1.0</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="05.jpg" alt="Me N U - I Don't Wanna Know">
-        <div class="meta"><div class="artist">Me N U</div><div class="title">I Don't Wanna Know</div></div>
+        <div class="info">
+          <div class="artist">Me N U</div>
+          <div class="title">I Don't Wanna Know</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="06.jpg" alt="Soul Wan - Bad Guy">
-        <div class="meta"><div class="artist">Soul Wan</div><div class="title">Bad Guy</div></div>
+        <div class="info">
+          <div class="artist">Soul Wan</div>
+          <div class="title">Bad Guy</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="07.jpg" alt="Umaryaa - Californication">
-        <div class="meta"><div class="artist">Umaryaa</div><div class="title">Californication</div></div>
+        <div class="info">
+          <div class="artist">Umaryaa</div>
+          <div class="title">Californication</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="08.jpg" alt="Sapa Inca - Hangdrum Trilogy 1.0">
-        <div class="meta"><div class="artist">Sapa Inca</div><div class="title">Hangdrum Trilogy 1.0</div></div>
+        <div class="info">
+          <div class="artist">Sapa Inca</div>
+          <div class="title">Hangdrum Trilogy 1.0</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="09.jpg" alt="Kofi Z - Bad Guy">
-        <div class="meta"><div class="artist">Kofi Z</div><div class="title">Bad Guy</div></div>
+        <div class="info">
+          <div class="artist">Kofi Z</div>
+          <div class="title">Bad Guy</div>
+        </div>
       </article>
 
       <article class="card">
         <img class="cover" src="10.jpg" alt="Fluxd Out - Heartless">
-        <div class="meta"><div class="artist">Fluxd Out</div><div class="title">Heartless</div></div>
+        <div class="info">
+          <div class="artist">Fluxd Out</div>
+          <div class="title">Heartless</div>
+        </div>
       </article>
     </section>
 
