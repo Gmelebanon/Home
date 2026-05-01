@@ -1,229 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nerd Engine Releases</title>
+<div class="grid">
 
-  <style>
-    :root {
-      --bg: #050707;
-      --card: #101414;
-      --card-hover: #151b1b;
-      --text: #ffffff;
-      --muted: #a8b3b3;
-      --accent: #00ff99;
-    }
+  <div class="card">
+    <img src="01.jpg">
+    <div class="artist">Synora</div>
+    <div class="title">432 Hz Awareness</div>
+  </div>
 
-    * {
-      box-sizing: border-box;
-    }
+  <div class="card">
+    <img src="02.jpg">
+    <div class="artist">Jaxen</div>
+    <div class="title">Blank Space</div>
+  </div>
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+  <div class="card">
+    <img src="03.jpg">
+    <div class="artist">Sheri Sky</div>
+    <div class="title">Bleeding Love</div>
+  </div>
 
-    .page {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 40px 24px 70px;
-    }
+  <div class="card">
+    <img src="04.jpg">
+    <div class="artist">Tru Moksha</div>
+    <div class="title">Eastern Essence 1.0</div>
+  </div>
 
-    header {
-      text-align: center;
-      margin-bottom: 42px;
-    }
+  <div class="card">
+    <img src="05.jpg">
+    <div class="artist">Me N U</div>
+    <div class="title">I Don't Wanna Know</div>
+  </div>
 
-    .logo {
-      color: var(--accent);
-      font-size: 14px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
+  <div class="card">
+    <img src="06.jpg">
+    <div class="artist">Soul Wan</div>
+    <div class="title">Bad Guy</div>
+  </div>
 
-    h1 {
-      margin: 0;
-      font-size: clamp(38px, 6vw, 72px);
-      letter-spacing: -0.06em;
-      line-height: 0.95;
-    }
+  <div class="card">
+    <img src="07.jpg">
+    <div class="artist">Umaryaa</div>
+    <div class="title">Californication</div>
+  </div>
 
-    .subtitle {
-      color: var(--muted);
-      margin-top: 16px;
-      font-size: 16px;
-    }
+  <div class="card">
+    <img src="08.jpg">
+    <div class="artist">Sapa Inca</div>
+    <div class="title">Hangdrum Trilogy 1.0</div>
+  </div>
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 22px;
-    }
+  <div class="card">
+    <img src="09.jpg">
+    <div class="artist">Kofi Z</div>
+    <div class="title">Bad Guy</div>
+  </div>
 
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 20px;
-      padding: 12px;
-      transition: 0.25s ease;
-    }
+  <div class="card">
+    <img src="10.jpg">
+    <div class="artist">Fluxd Out</div>
+    <div class="title">Heartless</div>
+  </div>
 
-    .card:hover {
-      transform: translateY(-6px);
-      background: var(--card-hover);
-      border-color: rgba(0, 255, 153, 0.45);
-    }
-
-    .cover {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      display: block;
-      border-radius: 15px;
-      background: #1a1a1a;
-    }
-
-    .info {
-      padding: 14px 4px 4px;
-      text-align: center;
-    }
-
-    .artist {
-      font-weight: 700;
-      font-size: 15px;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    footer {
-      margin-top: 48px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 1000px) {
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 650px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-      }
-
-      .page {
-        padding: 28px 14px 50px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <main class="page">
-    <header>
-      <div class="logo">Nerd Engine</div>
-      <h1>Latest Releases</h1>
-      <p class="subtitle">New music releases curated in one place.</p>
-    </header>
-
-    <section class="grid">
-      <article class="card">
-        <img class="cover" src="01.jpg" alt="Synora - 432 Hz Awareness">
-        <div class="info">
-          <div class="artist">Synora</div>
-          <div class="title">432 Hz Awareness</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="02.jpg" alt="Jaxen - Blank Space">
-        <div class="info">
-          <div class="artist">Jaxen</div>
-          <div class="title">Blank Space</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="03.jpg" alt="Sheri Sky - Bleeding Love">
-        <div class="info">
-          <div class="artist">Sheri Sky</div>
-          <div class="title">Bleeding Love</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="04.jpg" alt="Tru Moksha - Eastern Essence 1.0">
-        <div class="info">
-          <div class="artist">Tru Moksha</div>
-          <div class="title">Eastern Essence 1.0</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="05.jpg" alt="Me N U - I Don't Wanna Know">
-        <div class="info">
-          <div class="artist">Me N U</div>
-          <div class="title">I Don't Wanna Know</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="06.jpg" alt="Soul Wan - Bad Guy">
-        <div class="info">
-          <div class="artist">Soul Wan</div>
-          <div class="title">Bad Guy</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="07.jpg" alt="Umaryaa - Californication">
-        <div class="info">
-          <div class="artist">Umaryaa</div>
-          <div class="title">Californication</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="08.jpg" alt="Sapa Inca - Hangdrum Trilogy 1.0">
-        <div class="info">
-          <div class="artist">Sapa Inca</div>
-          <div class="title">Hangdrum Trilogy 1.0</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="09.jpg" alt="Kofi Z - Bad Guy">
-        <div class="info">
-          <div class="artist">Kofi Z</div>
-          <div class="title">Bad Guy</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <img class="cover" src="10.jpg" alt="Fluxd Out - Heartless">
-        <div class="info">
-          <div class="artist">Fluxd Out</div>
-          <div class="title">Heartless</div>
-        </div>
-      </article>
-    </section>
-
-    <footer>
-      Nerd Engine / Release Hub
-    </footer>
-  </main>
-</body>
-</html>
+</div>
