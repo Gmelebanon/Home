@@ -1,111 +1,199 @@
-"use client";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nerd Engine Releases</title>
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { isLoggedIn, loginUser } from "@/lib/simpleAuth";
-
-const releases = [
-  ["01.jpg", "Synora", "432 Hz Awareness"],
-  ["02.jpg", "Jaxen", "Blank Space"],
-  ["03.jpg", "Sheri Sky", "Bleeding Love"],
-  ["04.jpg", "Tru Moksha", "Eastern Essence 1.0"],
-  ["05.jpg", "Me N U", "I Don't Wanna Know"],
-  ["06.jpg", "Soul Wan", "Bad Guy"],
-  ["07.jpg", "Kassö", "Breathe"],
-  ["08.jpg", "Sapa Inca", "Hangdrum Trilogy 1.0"],
-  ["09.jpg", "Kofi Z", "Bad Guy"],
-  ["10.jpg", "Fluxd Out", "Birds Of A Feather"],
-];
-
-export default function LoginPage() {
-  const router = useRouter();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(true);
-
-  useEffect(() => {
-    if (isLoggedIn()) {
-      document.cookie =
-        "auth_token=logged_in; path=/; max-age=86400; SameSite=Lax; Secure";
-      router.push("/dashboard");
+  <style>
+    :root {
+      --bg: #050707;
+      --card: #101414;
+      --card-hover: #151b1b;
+      --text: #ffffff;
+      --muted: #a8b3b3;
+      --accent: #00ff99;
     }
-  }, [router]);
 
-  const handleLogin = () => {
-    const success = loginUser(username, password, remember);
+    * { box-sizing: border-box; }
 
-    if (success) {
-      const maxAge = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24;
-
-      document.cookie = `auth_token=logged_in; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
-      router.push("/dashboard");
-    } else {
-      alert("Wrong username or password");
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-  };
 
-  return (
-    <main className="min-h-screen bg-[#050707] px-6 py-10 text-white">
-      <div className="mx-auto max-w-[1300px]">
-        <div className="mb-10 flex items-start justify-between gap-6">
-          <header className="flex-1 text-center">
-            <div className="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-[#00ff99]">
-              NERD MUSIC
-            </div>
-            <h1 className="text-5xl font-bold tracking-[-0.06em] md:text-7xl">
-              Latest Releases
-            </h1>
-          </header>
+    .page {
+      max-width: 1300px;
+      margin: auto;
+      padding: 40px 24px 70px;
+    }
 
-          <div className="w-[320px] rounded-2xl border border-white/10 bg-[#101414] p-4">
-            <input
-              type="text"
-              placeholder="Username"
-              className="mb-3 w-full rounded-lg bg-[#1b2020] px-3 py-2 text-sm outline-none"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+    header {
+      text-align: center;
+      margin-bottom: 42px;
+    }
 
-            <input
-              type="password"
-              placeholder="Password"
-              className="mb-3 w-full rounded-lg bg-[#1b2020] px-3 py-2 text-sm outline-none"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleLogin();
-              }}
-            />
+    .logo {
+      color: var(--accent);
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
 
-            <button
-              onClick={handleLogin}
-              className="w-full rounded-lg bg-[#00ff99] py-2 text-sm font-bold text-black transition hover:opacity-90"
-            >
-              Login
-            </button>
-          </div>
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 6vw, 72px);
+      letter-spacing: -0.06em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 22px;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: var(--card-hover);
+      border-color: rgba(0,255,153,0.4);
+    }
+
+    .cover {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+      background: #1a1a1a;
+    }
+
+    .info {
+      padding: 14px 4px 4px;
+      text-align: center;
+    }
+
+    .artist {
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1000px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 650px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+    <header>
+      <div class="logo">NERD MUSIC</div>
+      <h1>Latest Releases</h1>
+    </header>
+
+    <section class="grid">
+
+      <a href="https://open.spotify.com/album/4U6WSixeI3ugQLBhOLkzPP?si=XsTsX4ZxR5Wsz6nkTk9glA" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="01.jpg">
+          <div class="info"><div class="artist">Synora</div><div class="title">432 Hz Awareness</div></div>
         </div>
+      </a>
 
-        <section className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-5">
-          {releases.map(([image, artist, title]) => (
-            <div
-              key={`${artist}-${title}`}
-              className="rounded-[20px] border border-white/10 bg-[#101414] p-3 transition hover:-translate-y-1.5 hover:border-[#00ff99]/40 hover:bg-[#151b1b]"
-            >
-              <img
-                src={`/${image}`}
-                alt={`${artist} - ${title}`}
-                className="aspect-square w-full rounded-[14px] bg-zinc-900 object-cover"
-              />
-              <div className="px-1 pb-1 pt-4 text-center">
-                <div className="mb-1 text-sm font-bold">{artist}</div>
-                <div className="text-xs text-[#a8b3b3]">{title}</div>
-              </div>
-            </div>
-          ))}
-        </section>
-      </div>
-    </main>
-  );
-}
+      <a href="https://open.spotify.com/album/1XxD8vzuAnHiJJnOToLjwv?si=UBL9tUyjTIqy2XqboXEHSw" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="02.jpg">
+          <div class="info"><div class="artist">Jaxen</div><div class="title">Blank Space</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/1H2rkAhe562F50k526x5kF?si=jvlCNdR2Rlqqkm4eh7oPwQ" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="03.jpg">
+          <div class="info"><div class="artist">Sheri Sky</div><div class="title">Bleeding Love</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/2pqXggOT5VaHUserDi1qXS?si=vwLLuoKqSuKwIYoTPuJO7w" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="04.jpg">
+          <div class="info"><div class="artist">Tru Moksha</div><div class="title">Eastern Essence 1.0</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/33tzPWRNw5mParJLsZN6SJ?si=BhiGFZbERTam7LxfR2bD-w" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="05.jpg">
+          <div class="info"><div class="artist">Me N U</div><div class="title">I Don't Wanna Know</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/3sSPbENTLwmrbP3hUHsjRX?si=d-qHn4wHRY-MOvelSRTS9A" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="06.jpg">
+          <div class="info"><div class="artist">Soul Wan</div><div class="title">Bad Guy</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/3N7GfEzk8qOojDUPkfcoJa?si=DhiDbWfxQTuESo9j5rhWdw" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="07.jpg">
+          <div class="info"><div class="artist">Kassö</div><div class="title">Breathe</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/2pVbLr5gf6WKtWQV5gBgYk?si=91Viko8VRyKvcr8NegBS4w" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="08.jpg">
+          <div class="info"><div class="artist">Sapa Inca</div><div class="title">Hangdrum Trilogy 1.0</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/album/2HRFtmDK80AlhSNOx9jq1i?si=HLN8foE6TviZmdU-Uqkydg" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="09.jpg">
+          <div class="info"><div class="artist">Kofi Z</div><div class="title">Bad Guy</div></div>
+        </div>
+      </a>
+
+      <a href="https://open.spotify.com/track/4lXPxQyXgrJwwpwEq1sh72?si=15cdcaca9c354a8b" target="_blank" class="card-link">
+        <div class="card">
+          <img class="cover" src="10.jpg">
+          <div class="info"><div class="artist">Fluxd Out</div><div class="title">Birds Of A Feather</div></div>
+        </div>
+      </a>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
