@@ -3,20 +3,27 @@ body{margin:0;background:#070909;color:#fff;font-family:Arial,sans-serif}
 .container{max-width:1400px;margin:auto;padding:32px}
 header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
 .header-actions{display:flex;gap:12px;align-items:center}
-.cta{padding:14px 26px;border:1px solid #18d67f;border-radius:999px;color:#fff;text-decoration:none}
+.cta{padding:14px 26px;border:1px solid #18d67f;border-radius:999px;color:#fff;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease;display:inline-block}
+.cta:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(24,214,127,0.25)}
 .cta.solid{background:#18d67f;border-color:#18d67f;color:#08120d;font-weight:700}
-.login-btn{padding:14px 26px;border:1px solid #555;border-radius:999px;color:#fff;background:transparent;text-decoration:none;cursor:pointer;font-size:15px;font-family:inherit}
-.login-btn:hover{border-color:#18d67f;color:#18d67f}
+.cta.solid:hover{background:#20f593;box-shadow:0 6px 20px rgba(24,214,127,0.45)}
+.login-btn{padding:14px 26px;border:1px solid #555;border-radius:999px;color:#fff;background:transparent;text-decoration:none;cursor:pointer;font-size:15px;font-family:inherit;transition:transform .2s ease,border-color .2s ease,color .2s ease,background .2s ease}
+.login-btn:hover{border-color:#18d67f;color:#18d67f;transform:translateY(-3px);background:rgba(24,214,127,0.08)}
 .hero{padding:60px 0}.hero h1{font-size:64px;margin:0;line-height:1.1}.hero p{color:#9fb1b1}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-.card{background:#111616;border:1px solid #2a3535;border-radius:20px;overflow:hidden}
-.card img{width:100%;aspect-ratio:1;object-fit:cover}
-.content{padding:16px}.btn{display:block;margin-top:10px;padding:10px;border-radius:999px;text-align:center;text-decoration:none}
+.card{background:#111616;border:1px solid #2a3535;border-radius:20px;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-6px);border-color:#18d67f;box-shadow:0 12px 28px rgba(0,0,0,0.4)}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;transition:transform .35s ease}
+.card:hover img{transform:scale(1.06)}
+.content{padding:16px}.btn{display:block;margin-top:10px;padding:10px;border-radius:999px;text-align:center;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease,color .2s ease}
 .spotify{background:#1db954;color:#08120d;font-weight:700}
+.spotify:hover{background:#22e767;transform:translateY(-2px);box-shadow:0 6px 16px rgba(29,185,84,0.4)}
 .secondary-row{display:flex;gap:10px;margin-top:10px}
 .secondary-row .btn{margin-top:0;flex:1;font-size:14px;padding:9px}
 .email-btn{border:1px solid #555;color:#fff}
+.email-btn:hover{border-color:#18d67f;color:#18d67f;transform:translateY(-2px)}
 .ig{border:1px solid #555;color:#fff}
+.ig:hover{border-color:#18d67f;color:#18d67f;transform:translateY(-2px)}
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.grid{grid-template-columns:1fr}.hero h1{font-size:40px}}
 
@@ -29,8 +36,10 @@ header{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 .login-panel label{display:block;margin:18px 0 6px;font-size:14px;color:#9fb1b1}
 .login-panel input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a3535;background:#070909;color:#fff;box-sizing:border-box;font-size:15px}
 .login-panel input:focus{outline:none;border-color:#18d67f}
-.login-submit{margin-top:28px;padding:14px;border-radius:999px;border:none;background:#18d67f;color:#08120d;font-weight:700;font-size:15px;cursor:pointer}
-.close-btn{align-self:flex-end;background:none;border:none;color:#9fb1b1;font-size:22px;cursor:pointer;line-height:1}
+.login-submit{margin-top:28px;padding:14px;border-radius:999px;border:none;background:#18d67f;color:#08120d;font-weight:700;font-size:15px;cursor:pointer;transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
+.login-submit:hover{background:#20f593;transform:translateY(-2px);box-shadow:0 6px 18px rgba(24,214,127,0.4)}
+.close-btn{align-self:flex-end;background:none;border:none;color:#9fb1b1;font-size:22px;cursor:pointer;line-height:1;transition:color .2s ease,transform .2s ease}
+.close-btn:hover{color:#18d67f;transform:rotate(90deg)}
 </style></head><body><div class='container'>
 <header>
 <h2>Nerd <span style='color:#18d67f'>Music</span></h2>
@@ -41,11 +50,11 @@ header{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 </header>
 
 <section class='hero'>
-<h1>Independent Record Label &amp; Artist Management</h1>
+<h1>Independent Record Label<br><span style='color:#18d67f'>&amp; Artist Management</span></h1>
 <p style='color:#9fb1b1;max-width:640px;margin:16px 0 0'>Home to a diverse roster of artist projects spanning electronic music, wellness, pop and beyond.</p>
 </section>
 
-<h2 style='color:#18d67f;letter-spacing:1px;margin:0 0 30px'>OUR ARTISTS</h2>
+<h2 style='color:#18d67f;letter-spacing:1px;margin:0 0 30px;font-size:28px'>OUR ARTISTS</h2>
 
 <h3 style='color:#18d67f'>Projects Created & Produced by</h3><h1>Wissam</h1>
 <div class='grid'>
