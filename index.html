@@ -1,316 +1,143 @@
-"use client";
+<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Nerd Music</title><style>
+body{margin:0;background:#070909;color:#fff;font-family:Arial,sans-serif}
+.container{max-width:1400px;margin:auto;padding:32px}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.header-actions{display:flex;gap:12px;align-items:center}
+.cta{padding:14px 26px;border:1px solid #18d67f;border-radius:999px;color:#fff;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease;display:inline-block}
+.cta:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(24,214,127,0.25)}
+.cta.solid{background:#18d67f;border-color:#18d67f;color:#08120d;font-weight:700}
+.cta.solid:hover{background:#20f593;box-shadow:0 6px 20px rgba(24,214,127,0.45)}
+.login-btn{padding:14px 26px;border:1px solid #555;border-radius:999px;color:#fff;background:transparent;text-decoration:none;cursor:pointer;font-size:15px;font-family:inherit;transition:transform .2s ease,border-color .2s ease,color .2s ease,background .2s ease}
+.login-btn:hover{border-color:#18d67f;color:#18d67f;transform:translateY(-3px);background:rgba(24,214,127,0.08)}
+.hero{padding:60px 0}.hero h1{font-size:64px;margin:0;line-height:1.1}.hero p{color:#9fb1b1}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card{background:#111616;border:1px solid #2a3535;border-radius:20px;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-6px);border-color:#18d67f;box-shadow:0 12px 28px rgba(0,0,0,0.4)}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;transition:transform .35s ease}
+.card:hover img{transform:scale(1.06)}
+.content{padding:16px}.btn{display:block;margin-top:10px;padding:10px;border-radius:999px;text-align:center;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease,color .2s ease}
+.spotify{background:#1db954;color:#08120d;font-weight:700}
+.spotify:hover{background:#22e767;transform:translateY(-2px);box-shadow:0 6px 16px rgba(29,185,84,0.4)}
+.secondary-row{display:flex;gap:10px;margin-top:10px}
+.secondary-row .btn{margin-top:0;flex:1;font-size:14px;padding:9px}
+.email-btn{border:1px solid #555;color:#fff}
+.email-btn:hover{border-color:#18d67f;color:#18d67f;transform:translateY(-2px)}
+.ig{border:1px solid #555;color:#fff}
+.ig:hover{border-color:#18d67f;color:#18d67f;transform:translateY(-2px)}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero h1{font-size:40px}}
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { isLoggedIn, loginUser } from "@/lib/simpleAuth";
+/* Login slide-out panel */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:100}
+.overlay.open{opacity:1;pointer-events:auto}
+.login-panel{position:fixed;top:0;right:-380px;width:340px;height:100%;background:#111616;border-left:1px solid #2a3535;padding:32px 28px;box-sizing:border-box;transition:right .35s ease;z-index:101;display:flex;flex-direction:column}
+.login-panel.open{right:0}
+.login-panel h2{margin-top:0;color:#18d67f}
+.login-panel label{display:block;margin:18px 0 6px;font-size:14px;color:#9fb1b1}
+.login-panel input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a3535;background:#070909;color:#fff;box-sizing:border-box;font-size:15px}
+.login-panel input:focus{outline:none;border-color:#18d67f}
+.login-submit{margin-top:28px;padding:14px;border-radius:999px;border:none;background:#18d67f;color:#08120d;font-weight:700;font-size:15px;cursor:pointer;transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
+.login-submit:hover{background:#20f593;transform:translateY(-2px);box-shadow:0 6px 18px rgba(24,214,127,0.4)}
+.close-btn{align-self:flex-end;background:none;border:none;color:#9fb1b1;font-size:22px;cursor:pointer;line-height:1;transition:color .2s ease,transform .2s ease}
+.close-btn:hover{color:#18d67f;transform:rotate(90deg)}
+</style></head><body><div class='container'>
+<header>
+<h2>Nerd <span style='color:#18d67f'>Music</span></h2>
+<div class='header-actions'>
+<a class='cta solid' href='mailto:info@nerdengine.live'>Artist Management</a>
+<button class='login-btn' onclick="document.getElementById('loginPanel').classList.add('open');document.getElementById('overlay').classList.add('open')">Login</button>
+</div>
+</header>
 
-const wissamArtists = [
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/basicfella.jpeg",
-    name: "Tru Moksha",
-    email: "trumoksha.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/7BSzQpjqGt6z8HSzFV09N9",
-    instagram: "https://instagram.com/TruMoksha",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/sapainca.png",
-    name: "Sapa Inca",
-    email: "sapainca.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/0wdSs51oLo1nuB5bolXmni",
-    instagram: "https://instagram.com/SapaInca.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/trumoksha.jpeg",
-    name: "Basic Fella",
-    email: "basicfella.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/1yRqpjLIyZx1tkEGA0IhTK",
-    instagram: "https://instagram.com/Basic.Fella",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/basicbounce.jpeg",
-    name: "Basic Bounce",
-    email: "basicbounce.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/0z7SDFl1aKcqCy6ccos5Ou",
-    instagram: "https://instagram.com/BasicBounce.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/Chuagong.jpg",
-    name: "Chuagong",
-    email: "Chuagong.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/1OEb7tFYztf53NCQ4k4kSt",
-    instagram: "https://instagram.com/chuagong.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/Samsarali.jpg",
-    name: "Samsarali",
-    email: "Samsarali.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/7rvpj3brm732kQPp2tzi8N",
-    instagram: null,
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/Satorizen.jpg",
-    name: "Satorizen",
-    email: "Satorizen.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/2sxVCY9puuM4lGe0ezYUkU",
-    instagram: null,
-  },
-];
+<section class='hero'>
+<h1>Independent Record Label<br><span style='color:#18d67f'>&amp; Artist Management</span></h1>
+<p style='color:#9fb1b1;max-width:640px;margin:16px 0 0'>Home to a diverse roster of artist projects spanning electronic music, wellness, pop and beyond.</p>
+</section>
 
-const bisanArtists = [
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/bigdreemz.jpeg",
-    name: "Bigdreamz",
-    email: "bigdreamz.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/5jLGvfXhJiV0OgM1dqCMnn",
-    instagram: "https://instagram.com/Bigdreamz.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/stronomax.jpeg",
-    name: "Stronomax",
-    email: "stronomax.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/43mfXC3HshPrNh2Vo9VPXl",
-    instagram: "https://instagram.com/Stronomax.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/innermystic.png",
-    name: "Inner Mystic",
-    email: "innermystic.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/1nvbByjsaipbB43fbsNNUY",
-    instagram: "https://instagram.com/InnerMystic.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/kofiz.jpeg",
-    name: "Kofi Z",
-    email: "kofiz.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/1nvbByjsaipbB43fbsNNUY",
-    instagram: "https://instagram.com/KofiZ.music",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/AlchemyBath.jpeg",
-    name: "Alchemy Bath",
-    email: "AlchemyBath.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/7fYP6OsxfXEl32pud105w2",
-    instagram: "https://instagram.com/alchemy.bath",
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/FeggioSol.jpeg",
-    name: "Feggio Sol",
-    email: "FeggioSol.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/0cct6qWAT29BBIkU2macPh",
-    instagram: null,
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/GongiJing.jpeg",
-    name: "Gongi Jing",
-    email: "GongiJing.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/1cyKjfuOoE7SVTApKO3NAU",
-    instagram: null,
-  },
-  {
-    image: "https://nerd-engine.vercel.app/landingpage/QinGong.jpeg",
-    name: "Qin Gong",
-    email: "QinGong.music@nerdengine.live",
-    spotify: "https://open.spotify.com/artist/4whzgVCNouYo84jwt7bqyP",
-    instagram: null,
-  },
-];
+<h2 style='color:#18d67f;letter-spacing:1px;margin:0 0 30px;font-size:28px'>OUR ARTISTS</h2>
 
-function ArtistCard({ artist }) {
-  return (
-    <div className="group rounded-2xl border border-white/10 bg-[#111616] p-3 shadow-[0_0_40px_rgba(0,255,153,0.03)] transition duration-300 hover:-translate-y-1.5 hover:border-[#18d67f]/50">
-      <img
-        src={artist.image}
-        alt={artist.name}
-        className="aspect-square w-full rounded-xl object-cover transition duration-300 group-hover:scale-[1.04]"
-      />
-      <div className="px-1 pb-1 pt-4">
-        <h3 className="text-lg font-black">{artist.name}</h3>
+<h3 style='color:#18d67f'>Projects Created & Produced by</h3><h1>Wissam</h1>
+<div class='grid'>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/basicfella.jpeg'><div class='content'><h3>Tru Moksha</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/7BSzQpjqGt6z8HSzFV09N9'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:trumoksha.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/TruMoksha'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/sapainca.png'><div class='content'><h3>Sapa Inca</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/0wdSs51oLo1nuB5bolXmni'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:sapainca.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/SapaInca.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/trumoksha.jpeg'><div class='content'><h3>Basic Fella</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/1yRqpjLIyZx1tkEGA0IhTK'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:basicfella.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/Basic.Fella'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/basicbounce.jpeg'><div class='content'><h3>Basic Bounce</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/0z7SDFl1aKcqCy6ccos5Ou'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:basicbounce.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/BasicBounce.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/Chuagong.jpg'><div class='content'><h3>Chuagong</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/1OEb7tFYztf53NCQ4k4kSt'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:Chuagong.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/chuagong.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/Samsarali.jpg'><div class='content'><h3>Samsarali</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/7rvpj3brm732kQPp2tzi8N'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:Samsarali.music@nerdengine.live'>Email</a><a class='btn ig' href='#'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/Satorizen.jpg'><div class='content'><h3>Satorizen</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/2sxVCY9puuM4lGe0ezYUkU'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:Satorizen.music@nerdengine.live'>Email</a><a class='btn ig' href='#'>Instagram</a></div>
+</div></div>
+</div>
 
-        <a
-          href={artist.spotify}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3 block rounded-full bg-[#1db954] px-4 py-2 text-center text-sm font-bold text-black transition hover:-translate-y-0.5 hover:bg-[#22e767]"
-        >
-          View on Spotify
-        </a>
+<h3 style='color:#18d67f;margin-top:50px'>Projects Created & Produced by</h3><h1>Bisan</h1>
+<div class='grid'>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/bigdreemz.jpeg'><div class='content'><h3>Bigdreamz</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/5jLGvfXhJiV0OgM1dqCMnn'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:bigdreamz.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/Bigdreamz.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/stronomax.jpeg'><div class='content'><h3>Stronomax</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/43mfXC3HshPrNh2Vo9VPXl'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:stronomax.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/Stronomax.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/innermystic.png'><div class='content'><h3>Inner Mystic</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/1nvbByjsaipbB43fbsNNUY'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:innermystic.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/InnerMystic.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/kofiz.jpeg'><div class='content'><h3>Kofi Z</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/1nvbByjsaipbB43fbsNNUY'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:kofiz.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/KofiZ.music'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/AlchemyBath.jpeg'><div class='content'><h3>Alchemy Bath</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/7fYP6OsxfXEl32pud105w2'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:AlchemyBath.music@nerdengine.live'>Email</a><a class='btn ig' href='https://instagram.com/alchemy.bath'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/FeggioSol.jpeg'><div class='content'><h3>Feggio Sol</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/0cct6qWAT29BBIkU2macPh'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:FeggioSol.music@nerdengine.live'>Email</a><a class='btn ig' href='#'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/GongiJing.jpeg'><div class='content'><h3>Gongi Jing</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/1cyKjfuOoE7SVTApKO3NAU'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:GongiJing.music@nerdengine.live'>Email</a><a class='btn ig' href='#'>Instagram</a></div>
+</div></div>
+<div class='card'><img src='https://nerd-engine.vercel.app/landingpage/QinGong.jpeg'><div class='content'><h3>Qin Gong</h3>
+<a class='btn spotify' href='https://open.spotify.com/artist/4whzgVCNouYo84jwt7bqyP'>View on Spotify</a>
+<div class='secondary-row'><a class='btn email-btn' href='mailto:QinGong.music@nerdengine.live'>Email</a><a class='btn ig' href='#'>Instagram</a></div>
+</div></div>
+</div>
 
-        <div className="mt-2 flex gap-2">
-          <a
-            href={`mailto:${artist.email}`}
-            className="flex-1 rounded-full border border-white/20 px-3 py-2 text-center text-sm transition hover:-translate-y-0.5 hover:border-[#18d67f] hover:text-[#18d67f]"
-          >
-            Email
-          </a>
-          <a
-            href={artist.instagram || "#"}
-            target={artist.instagram ? "_blank" : undefined}
-            rel="noopener noreferrer"
-            className="flex-1 rounded-full border border-white/20 px-3 py-2 text-center text-sm transition hover:-translate-y-0.5 hover:border-[#18d67f] hover:text-[#18d67f]"
-          >
-            Instagram
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
+<footer style='padding:60px 0;text-align:center;color:#9fb1b1'>2026 Nerd Music - <a href='mailto:info@nerdengine.live' style='color:#18d67f;text-decoration:none'>info@nerdengine.live</a></footer>
+</div>
 
-export default function LandingPage() {
-  const router = useRouter();
-  const [panelOpen, setPanelOpen] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+<div class='overlay' id='overlay' onclick="document.getElementById('loginPanel').classList.remove('open');this.classList.remove('open')"></div>
+<div class='login-panel' id='loginPanel'>
+<button class='close-btn' onclick="document.getElementById('loginPanel').classList.remove('open');document.getElementById('overlay').classList.remove('open')">✕</button>
+<h2>Login</h2>
+<form onsubmit="event.preventDefault();alert('Login functionality coming soon.');">
+<label for='email'>Email</label>
+<input type='email' id='email' required placeholder='you@example.com'>
+<label for='password'>Password</label>
+<input type='password' id='password' required placeholder='••••••••'>
+<button class='login-submit' type='submit'>Login</button>
+</form>
+</div>
 
-  useEffect(() => {
-    if (isLoggedIn()) {
-      document.cookie =
-        "auth_token=logged_in; path=/; max-age=86400; SameSite=Lax; Secure";
-      router.push("/dashboard");
-    }
-  }, [router]);
-
-  const handleLogin = () => {
-    setError("");
-    const success = loginUser(username, password, true);
-
-    if (success) {
-      document.cookie =
-        "auth_token=logged_in; path=/; max-age=2592000; SameSite=Lax; Secure";
-      router.push("/dashboard");
-    } else {
-      setError("Wrong username or password");
-    }
-  };
-
-  return (
-    <main className="min-h-screen bg-[#070909] text-white">
-      {/* Header */}
-      <header className="flex flex-wrap items-center justify-between gap-4 px-8 py-8 md:px-16">
-        <h2 className="text-2xl font-bold">
-          Nerd <span className="text-[#18d67f]">Music</span>
-        </h2>
-
-        <div className="flex items-center gap-3">
-          <a
-            href="mailto:info@nerdengine.live"
-            className="rounded-full bg-[#18d67f] px-6 py-3 font-bold text-[#08120d] transition hover:-translate-y-0.5 hover:bg-[#20f593] hover:shadow-[0_6px_20px_rgba(24,214,127,0.45)]"
-          >
-            Artist Management
-          </a>
-          <button
-            onClick={() => setPanelOpen(true)}
-            className="rounded-full border border-white/30 px-6 py-3 text-sm transition hover:-translate-y-0.5 hover:border-[#18d67f] hover:text-[#18d67f]"
-          >
-            Login
-          </button>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <section className="px-8 py-14 md:px-16">
-        <h1 className="text-[42px] font-black leading-tight md:text-[64px]">
-          Independent Record Label
-          <br />
-          <span className="text-[#18d67f]">&amp; Artist Management</span>
-        </h1>
-        <p className="mt-4 max-w-xl text-zinc-400">
-          Home to a diverse roster of artist projects spanning electronic
-          music, wellness, pop and beyond.
-        </p>
-      </section>
-
-      <div className="px-8 md:px-16">
-        <h2 className="mb-8 text-[28px] font-bold tracking-wide text-[#18d67f]">
-          OUR ARTISTS
-        </h2>
-
-        <h3 className="text-[#18d67f]">Projects Created & Produced by</h3>
-        <h1 className="mb-6 text-4xl font-black">Wissam</h1>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {wissamArtists.map((artist) => (
-            <ArtistCard key={artist.name} artist={artist} />
-          ))}
-        </div>
-
-        <h3 className="mt-14 text-[#18d67f]">Projects Created & Produced by</h3>
-        <h1 className="mb-6 text-4xl font-black">Bisan</h1>
-        <div className="grid grid-cols-1 gap-6 pb-16 sm:grid-cols-2 lg:grid-cols-4">
-          {bisanArtists.map((artist) => (
-            <ArtistCard key={artist.name} artist={artist} />
-          ))}
-        </div>
-      </div>
-
-      <footer className="px-8 py-14 text-center text-zinc-400">
-        2026 Nerd Music -{" "}
-        <a
-          href="mailto:info@nerdengine.live"
-          className="text-[#18d67f] hover:underline"
-        >
-          info@nerdengine.live
-        </a>
-      </footer>
-
-      {/* Login overlay + slide-out panel */}
-      <div
-        onClick={() => setPanelOpen(false)}
-        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${
-          panelOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      />
-
-      <div
-        className={`fixed right-0 top-0 z-50 flex h-full w-[340px] flex-col border-l border-white/10 bg-[#111616] p-8 transition-transform duration-300 ${
-          panelOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <button
-          onClick={() => setPanelOpen(false)}
-          className="self-end text-2xl text-zinc-400 transition hover:rotate-90 hover:text-[#18d67f]"
-        >
-          ✕
-        </button>
-
-        <h2 className="mb-2 text-xl font-bold text-[#18d67f]">Login</h2>
-
-        {error && <p className="mb-2 text-sm text-red-400">{error}</p>}
-
-        <label className="mt-4 text-sm text-zinc-400" htmlFor="username">
-          Username
-        </label>
-        <input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="username"
-          className="mt-1 rounded-xl border border-white/10 bg-[#070909] px-4 py-3 text-sm outline-none focus:border-[#18d67f]"
-        />
-
-        <label className="mt-4 text-sm text-zinc-400" htmlFor="password">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleLogin();
-          }}
-          placeholder="••••••••"
-          className="mt-1 rounded-xl border border-white/10 bg-[#070909] px-4 py-3 text-sm outline-none focus:border-[#18d67f]"
-        />
-
-        <button
-          onClick={handleLogin}
-          className="mt-7 rounded-full bg-[#18d67f] py-3 font-bold text-[#08120d] transition hover:-translate-y-0.5 hover:bg-[#20f593]"
-        >
-          Login
-        </button>
-      </div>
-    </main>
-  );
-}
+</body></html>
